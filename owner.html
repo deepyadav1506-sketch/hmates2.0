@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard - HMates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <div style="width:45px;height:45px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.2rem;">H</div>
+                    <h1>HMates<span>.</span></h1>
+                </a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="hostels.html" class="nav-link">Hostels</a>
+                    <a href="booking.html" class="nav-link">Book Now</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="owner.html" class="nav-link active">Owner</a>
+                    <a href="#" class="login-btn nav-link" onclick="logoutUser()">Logout</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Owner Dashboard -->
+    <main>
+        <div class="dashboard-grid">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <div style="width:50px;height:50px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;margin-bottom:1rem;">H</div>
+                    <h2 style="color: white;">Dashboard<span>.</span></h2>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#owner-list" onclick="showOwnerSection('list')" class="active"><i class="fas fa-plus-circle"></i> Add Hostel</a></li>
+                        <li><a href="#owner-my" onclick="showOwnerSection('my')"><i class="fas fa-list"></i> My Hostels</a></li>
+                        <li><a href="#owner-bookings" onclick="showOwnerSection('bookings')"><i class="fas fa-bell"></i> Bookings</a></li>
+                        <li><a href="index.html" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Add Hostel -->
+                <section id="owner-list-section" class="owner-section">
+                    <div class="card-header">
+                        <h3><i class="fas fa-hotel"></i> List New Hostel</h3>
+                    </div>
+                   <form onsubmit="addHostelFunc(event)">
+                        <!-- Image Upload -->
+                        <div class="form-group">
+                            <label><i class="fas fa-image"></i> Hostel Image</label>
+                            <input type="file" id="hostelImage" accept="image/*" onchange="previewImage()">
+                            <div id="imagePreview" class="image-preview" style="display:none;">
+                                <img id="previewImg" style="width:150px;height:150px;object-fit:cover;border-radius:12px;border:3px solid var(--primary);">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-hotel"></i> Hostel Name</label>
+                                <input type="text" id="hostelName" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-venus-mars"></i> Type</label>
+                                <select id="hostelType" required>
+                                    <option value="boys">Boys Hostel</option>
+                                    <option value="girls">Girls Hostel</option>
+                                    <option value="premium">Premium/Mixed</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                            <input type="text" id="hostelLocation" placeholder="Near JECRC/SKIT etc." required>
+                        </div>
+
+                        <!-- Room Pricing -->
+                        <div class="form-group">
+                            <label><i class="fas fa-coins"></i> Room Prices (₹/month)</label>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+                                <div>
+                                    <strong>Non-AC</strong><br>
+                                    <label>Single:</label><input type="number" id="nonAcSingle" min="2000" max="20000" step="500" value="5000" style="width:120px;margin-left:0.3rem;">
+                                    <label style="margin-left:1.5rem;">Double:</label><input type="number" id="nonAcDouble" min="1500" max="15000" step="500" value="4500" style="width:120px;">
+                                </div>
+                                <div>
+                                    <strong>AC</strong><br>
+                                    <label>Single:</label><input type="number" id="acSingle" min="3000" max="25000" step="500" value="6500" style="width:120px;margin-left:0.3rem;">
+                                    <label style="margin-left:1.5rem;">Double:</label><input type="number" id="acDouble" min="2500" max="20000" step="500" value="5500" style="width:120px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="max-width:300px;">✅ Publish Hostel</button>
+                    </form>
+                </section>
+
+                <!-- My Hostels -->
+                <section id="owner-my-section" class="owner-section hidden">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-ul"></i> Your Hostels</h3>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Price</th>
+                                <th>Type</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myHostelsTable"></tbody>
+                    </table>
+                </section>
+
+                <!-- Bookings -->
+                <section id="owner-bookings-section" class="owner-section hidden">
+                    <div class="card-header">
+                        <h3><i class="fas fa-list-check"></i> Booking Requests</h3>
+                    </div>
+                    <div id="ownerBookingsList" style="max-height: 500px; overflow-y: auto;"></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--dark); color: var(--white); text-align: center; padding: 3rem 0 2rem;">
+        <div class="container">
+            <p>© 2026 HMates | All data stored locally | Made for JECRC students</p>
+        </div>
+    </footer>
+
+    <script src="js/owner.js"></script>
+
+</body>
+</html>
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hostel - HMates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+    <!-- Navigation -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <div style="width:45px;height:45px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.2rem;">H</div>
+                    <h1>HMates<span>.</span></h1>
+                </a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="hostels.html" class="nav-link">Hostels</a>
+                    <a href="booking.html" class="nav-link active">Book Now</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="owner.html" class="nav-link">Owner</a>
+                    <a href="login.html" class="login-btn nav-link">Login</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Booking Page -->
+    <main style="min-height: 100vh; padding: 5rem 0;">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 3rem; max-width: 1000px; margin: 0 auto;">
+                <!-- Booking Form -->
+                <div class="booking-form-card" style="background: var(--white); padding: 3rem; border-radius: 25px; box-shadow: var(--shadow-lg);">
+                    <h2>Complete Your Booking</h2>
+                    <p>Fill details and get instant confirmation from owner.</p>
+                    <form onsubmit="handleBooking(event)" style="margin-top: 2rem;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label><i class="fas fa-user"></i> Full Name</label>
+                                <input type="text" id="bookName" required>
+                            </div>
+                            <div class="form-group">
+                                <label><i class="fas fa-phone"></i> Phone</label>
+                                <input type="tel" id="bookPhone" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-hotel"></i> Select Hostel</label>
+                            <select id="bookHostel" onchange="updateBookingPrice()" required>
+                                <option value="">Choose hostel...</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Sharing</label>
+                                <select id="bookSharing" onchange="updateBookingPrice()">
+                                    <option value="single">Single (Full Price)</option>
+                                    <option value="double">Double (₹1000 discount)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Room Type</label>
+                                <select id="bookType" onchange="updateBookingPrice()">
+                                    <option value="non-ac">Non-AC</option>
+                                    <option value="ac">AC (+₹1500)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Confirm Booking</button>
+                    </form>
+                </div>
+
+                <!-- Price Summary -->
+                <div class="price-summary-card" style="background: var(--white); padding: 2.5rem; border-radius: 20px; box-shadow: var(--shadow); height: fit-content;">
+                    <h3><i class="fas fa-receipt"></i> Price Summary</h3>
+                    <div class="price-item" style="display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #eee;">
+                        <span>Base Rent</span>
+                        <span id="bookBasePrice">₹0</span>
+                    </div>
+                    <div class="price-item" style="display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #eee;">
+                        <span>Sharing Discount</span>
+                        <span id="bookDiscount">₹0</span>
+                    </div>
+                    <div class="price-item" style="display: flex; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #eee;">
+                        <span>AC Charge</span>
+                        <span id="bookAC">₹0</span>
+                    </div>
+                    <hr style="margin: 1.5rem 0;">
+                    <div class="price-total" style="display: flex; justify-content: space-between; font-size: 1.4rem; font-weight: 700; color: var(--primary);">
+                        <span>Total / Month</span>
+                        <span id="bookTotal">₹0</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 1rem;">*Payable after owner confirmation</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--dark); color: var(--white); text-align: center; padding: 3rem 0 2rem;">
+        <div class="container">
+            <p>© 2026 HMates | All data stored locally | Made for JECRC students</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+
+</body>
+</html>
+

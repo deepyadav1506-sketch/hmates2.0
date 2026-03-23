@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostels - HMates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="index.html" class="logo">
+                    <div style="width:45px;height:45px;background:linear-gradient(135deg,var(--primary),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:1.2rem;">H</div>
+                    <h1>HMates<span>.</span></h1>
+                </a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link">Home</a>
+                    <a href="hostels.html" class="nav-link active">Hostels</a>
+                    <a href="booking.html" class="nav-link">Book Now</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                    <a href="owner.html" class="nav-link">Owner</a>
+                    <a href="login.html" class="login-btn nav-link">Login</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hostels Page -->
+    <main>
+        <div class="container">
+            <div class="listing-header text-center">
+                <h2>Explore Verified Hostels</h2>
+                <p>Filter by gender, location, and amenities. All listings are verified.</p>
+            </div>
+          <!-- Filters -->
+          <div class="filter-wrapper" style="margin-bottom: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+    
+    <select id="hostelFilter" onchange="filterHostels()" style="padding: 0.8rem 1.2rem; border: 2px solid #e1e5e9; border-radius: 25px; font-weight: 500; min-width: 180px;">
+        <option value="all">All Hostels</option>
+        <option value="boys">Boys Hostels</option>
+        <option value="girls">Girls Hostels</option>
+        <option value="premium">Premium Hostels</option>
+    </select>
+
+    <input type="text" id="hostelSearch" placeholder="Search hostels..." oninput="filterHostels()" style="padding: 0.8rem 1.2rem; border: 2px solid #e1e5e9; border-radius: 25px; flex: 1; max-width: 400px;">
+
+</div>
+
+
+
+<div class="cards-container loading-grid" id="hostelGrid">
+                <div class="card-skeleton" style="animation: pulse 1.5s ease-in-out infinite;">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-text">
+                        <div class="skeleton-line long"></div>
+                        <div class="skeleton-line short"></div>
+                    </div>
+                </div>
+                <div class="card-skeleton" style="animation: pulse 1.5s ease-in-out infinite 0.1s;">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-text">
+                        <div class="skeleton-line long"></div>
+                        <div class="skeleton-line short"></div>
+                    </div>
+                </div>
+                <div class="card-skeleton" style="animation: pulse 1.5s ease-in-out infinite 0.2s;">
+                    <div class="skeleton-img"></div>
+                    <div class="skeleton-text">
+                        <div class="skeleton-line long"></div>
+                        <div class="skeleton-line short"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="noResults" class="text-center hidden" style="padding: 4rem; color: #666;">
+                <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>No hostels found</h3>
+                <p>Try adjusting your filters or search terms</p>
+                <button onclick="refreshHostels()" class="btn-primary" style="margin-top:1rem;">Refresh Hostels</button>
+            </div>
+            <div id="noResults" class="text-center hidden" style="padding: 4rem; color: #666;">
+                <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                <h3>No hostels found</h3>
+                <p>Try adjusting your filters or search terms</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer style="background: var(--dark); color: var(--white); text-align: center; padding: 3rem 0 2rem;">
+        <div class="container">
+            <p>© Made By TechTrio</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
