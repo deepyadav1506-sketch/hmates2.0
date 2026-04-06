@@ -1,6 +1,7 @@
 const express = require('express');
 const Booking = require('../models/Booking');
 const router = express.Router();
+const authMiddleware = require('../middleware/authmiddleware');
 
 // GET /api/bookings - Student bookings
 router.get('/student', async (req, res) => {
@@ -29,7 +30,7 @@ router.get('/owner', async (req, res) => {
 });
 
 // POST /api/bookings - Create booking
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const booking = new Booking(req.body);
     await booking.save();

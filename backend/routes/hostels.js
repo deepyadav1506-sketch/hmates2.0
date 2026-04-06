@@ -1,6 +1,8 @@
+
 const express = require('express');
 const Hostel = require('../models/Hostel');
 const router = express.Router();
+const authMiddleware = require('../middleware/authmiddleware');
 
 // ✅ GET all hostels (public)
 router.get('/', async (req, res) => {
@@ -33,7 +35,7 @@ router.get('/my', async (req, res) => {
 });
 
 // ✅ POST create hostel
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
   try {
     const { name, location, type, price, ownerId, image } = req.body;
 
@@ -62,7 +64,7 @@ router.post('/', async (req, res) => {
 });
 
 // ✅ DELETE hostel
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
