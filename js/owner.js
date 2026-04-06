@@ -1,6 +1,6 @@
 const API_BASE = 'http://localhost:5000/api';
 
-// Always get fresh user
+// Get current user
 function getCurrentUser() {
   return JSON.parse(localStorage.getItem('hmates_currentUser') || 'null');
 }
@@ -30,33 +30,26 @@ function previewImage() {
   reader.readAsDataURL(file);
 }
 
-// ✅ Add hostel (FINAL FIX)
+// Add hostel
 async function addHostelFunc(event) {
   event.preventDefault();
 
   const currentUser = getCurrentUser();
+  const token = localStorage.getItem('hmates_token');
 
-  if (!currentUser) {
+  if (!currentUser || !token) {
     alert("Login required");
-    window.location.href = "login.html";
     return;
   }
 
-  // 🔥 IMPORTANT: handle both id and _id
   const ownerId = currentUser._id || currentUser.id;
-
-  if (!ownerId) {
-    alert("User ID missing. Please login again.");
-    console.log("User object:", currentUser);
-    return;
-  }
 
   const hostelData = {
     name: document.getElementById('hostelName').value,
     location: document.getElementById('hostelLocation').value,
     type: document.getElementById('hostelType').value,
     price: parseInt(document.getElementById('nonAcSingle').value),
-    ownerId: ownerId   // ✅ guaranteed value
+    ownerId
   };
 
   try {
@@ -66,11 +59,11 @@ async function addHostelFunc(event) {
       const reader = new FileReader();
       reader.onload = async () => {
         hostelData.image = reader.result;
-        await saveHostel(hostelData);
+        await saveHostel(hostelData, token);
       };
       reader.readAsDataURL(file);
     } else {
-      await saveHostel(hostelData);
+      await saveHostel(hostelData, token);
     }
 
   } catch (error) {
@@ -80,47 +73,50 @@ async function addHostelFunc(event) {
 }
 
 // Save hostel
-async function saveHostel(hostelData) {
-  try {
-    console.log("Sending data:", hostelData); // 🔍 debug
+async function saveHostel(hostelData, token) {
+  const res = await fetch(`${API_BASE}/hostels`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(hostelData)
+  });
 
-    const res = await fetch(`${API_BASE}/hostels`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(hostelData)
-    });
+  const data = await res.json();
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      console.error("Backend error:", data);
-      throw new Error(data.error || "Failed");
-    }
-
-    alert("Hostel published successfully ✅");
-
-    document.querySelector('form').reset();
-    document.getElementById('imagePreview').style.display = 'none';
-
-    loadMyHostels();
-
-  } catch (error) {
-    console.error(error);
-    alert("Publish failed ❌");
+  if (!res.ok) {
+    alert(data.error || "Failed");
+    return;
   }
+
+  alert("Hostel published ✅");
+
+  document.querySelector('form').reset();
+  document.getElementById('imagePreview').style.display = 'none';
+
+  loadMyHostels();
 }
 
-// Load my hostels
+// ✅ FIXED: Load my hostels
 async function loadMyHostels() {
   const currentUser = getCurrentUser();
+  const token = localStorage.getItem('hmates_token');
+
   const ownerId = currentUser?._id || currentUser?.id;
 
-  if (!ownerId) return;
+  if (!ownerId || !token) return;
 
   try {
-    const res = await fetch(`${API_BASE}/hostels/my?ownerId=${ownerId}`);
-    ownerHostels = await res.json();
-    renderMyHostels();
+    const res = await fetch(`${API_BASE}/hostels/my?ownerId=${ownerId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    ownerHostels = await res.json();   // 🔥 IMPORTANT
+    renderMyHostels();                 // 🔥 IMPORTANT
+
   } catch (error) {
     console.error(error);
   }
@@ -148,24 +144,22 @@ function renderMyHostels() {
   `).join('');
 }
 
-// Load bookings
+// ✅ FIXED: Load bookings
 async function loadOwnerBookings() {
-  const currentUser = getCurrentUser();
-  const ownerId = currentUser?._id || currentUser?.id;
+  const token = localStorage.getItem('hmates_token');
 
-  if (!ownerId) return;
+  if (!token) return;
 
   try {
-    if (!ownerHostels.length) {
-      const res = await fetch(`${API_BASE}/hostels/my?ownerId=${ownerId}`);
-      ownerHostels = await res.json();
-    }
-
     const hostelNames = ownerHostels.map(h => h.name).join(',');
 
-    const res = await fetch(`${API_BASE}/bookings/owner?hostelNames=${hostelNames}`);
-    ownerBookings = await res.json();
+    const res = await fetch(`${API_BASE}/bookings/owner?hostelNames=${hostelNames}`, {
+      headers: {
+        Authorization: `Bearer ${token}`   // 🔥 FIXED
+      }
+    });
 
+    ownerBookings = await res.json();
     renderBookings();
 
   } catch (error) {
@@ -193,10 +187,15 @@ function renderBookings() {
 
 // Delete hostel
 async function deleteHostel(id) {
+  const token = localStorage.getItem('hmates_token');
+
   if (!confirm("Delete this hostel?")) return;
 
   await fetch(`${API_BASE}/hostels/${id}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
   });
 
   loadMyHostels();
