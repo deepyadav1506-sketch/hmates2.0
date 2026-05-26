@@ -259,3 +259,35 @@
     justify-content:center;
     margin-bottom:1rem;
 }
+/* Facility Checkboxes */
+
+.facility-checkboxes{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:1rem;
+    margin-top:1rem;
+}
+
+.facility-item{
+    background:#f5f7fb;
+    padding:1rem;
+    border-radius:12px;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:0.3s;
+    font-weight:500;
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+}
+
+.facility-item:hover{
+    border-color:var(--primary);
+    background:#ecfdf5;
+}
+
+.facility-item input{
+    width:18px;
+    height:18px;
+    accent-color:var(--primary);
+}

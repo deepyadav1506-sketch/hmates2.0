@@ -267,3 +267,92 @@ function filterHostels() {
     }
 
 }
+/* =========================
+   RENDER HOSTELS
+========================= */
+
+function renderHostels(hostels) {
+
+    const hostelGrid =
+        document.getElementById('hostelGrid');
+
+    if (!hostelGrid) return;
+
+    hostelGrid.innerHTML = '';
+
+    if (!hostels.length) {
+
+        hostelGrid.innerHTML = `
+            <div style="padding:2rem;">
+                No hostels found
+            </div>
+        `;
+
+        return;
+    }
+
+    hostels.forEach(hostel => {
+
+        hostelGrid.innerHTML += `
+
+        <div class="card hostel-card"
+            data-type="${hostel.type}"
+            data-price="${hostel.price}"
+            data-facilities="ac wifi">
+
+            <img src="${hostel.image || 'css/hostal.jpg'}"
+                alt="Hostel">
+
+            <span class="tag">
+                ${hostel.type}
+            </span>
+
+            <div class="card-info">
+
+                <h3>${hostel.name}</h3>
+
+                <p class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${hostel.location}
+                </p>
+
+                <p class="features">
+                    AC Room • WiFi
+                </p>
+
+                <div class="facilities">
+
+                    <span class="facility-tag">
+                        AC
+                    </span>
+
+                    <span class="facility-tag">
+                        WiFi
+                    </span>
+
+                </div>
+
+                <div class="card-footer">
+
+                    <div class="price">
+                        ₹${hostel.price}
+                    </div>
+
+                    <a href="booking.html"
+                        class="btn-sm">
+
+                        Book Now
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}

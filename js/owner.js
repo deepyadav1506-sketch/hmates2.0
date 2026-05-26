@@ -31,45 +31,171 @@ function previewImage() {
 }
 
 // Add hostel
+// Add hostel
 async function addHostelFunc(event) {
-  event.preventDefault();
 
-  const currentUser = getCurrentUser();
-  const token = localStorage.getItem('hmates_token');
+    event.preventDefault();
 
-  if (!currentUser || !token) {
-    alert("Login required");
-    return;
-  }
+    const currentUser =
+        getCurrentUser();
 
-  const ownerId = currentUser._id || currentUser.id;
+    const token =
+        localStorage.getItem('hmates_token');
 
-  const hostelData = {
-    name: document.getElementById('hostelName').value,
-    location: document.getElementById('hostelLocation').value,
-    type: document.getElementById('hostelType').value,
-    price: parseInt(document.getElementById('nonAcSingle').value),
-    ownerId
-  };
+    if (!currentUser || !token) {
 
-  try {
-    const file = document.getElementById('hostelImage').files[0];
+        alert("Login required");
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        hostelData.image = reader.result;
-        await saveHostel(hostelData, token);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      await saveHostel(hostelData, token);
+        return;
+
     }
 
-  } catch (error) {
-    console.error(error);
-    alert("Failed to add hostel");
-  }
+    const ownerId =
+        currentUser._id || currentUser.id;
+
+    const hostelData = {
+
+        name:
+            document.getElementById('hostelName').value,
+
+        location:
+            document.getElementById('hostelLocation').value,
+
+        type:
+            document.getElementById('hostelType').value,
+
+        price:
+            parseInt(
+                document.getElementById('nonAcSingle').value
+            ),
+
+        ownerId
+
+    };
+
+    try {
+
+        const file =
+            document.getElementById('hostelImage').files[0];
+
+        // Image Upload
+        if (file) {
+
+            const reader =
+                new FileReader();
+
+            reader.onload = async () => {
+
+                hostelData.image =
+                    reader.result;
+
+                await saveHostel(
+                    hostelData,
+                    token
+                );
+
+            };
+
+            reader.readAsDataURL(file);
+
+        } else {
+
+            hostelData.image =
+                "css/hostal.jpg";
+
+            await saveHostel(
+                hostelData,
+                token
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Failed to add hostel");
+
+    }
+
+}
+
+/* =========================
+   SAVE HOSTEL TO DATABASE
+========================= */
+
+async function saveHostel(hostelData, token) {
+
+    try {
+
+        const res = await fetch(
+            'http://localhost:5000/api/hostels',
+            {
+
+                method: 'POST',
+
+                headers: {
+
+                    'Content-Type':
+                        'application/json',
+
+                    Authorization:
+                        `Bearer ${token}`
+
+                },
+
+                body:
+                    JSON.stringify(hostelData)
+
+            }
+        );
+
+        if (!res.ok) {
+
+    const err =
+        await res.json();
+
+    console.log(err);
+
+    alert(
+        err.error || "Hostel publish failed"
+    );
+
+    return;
+
+}
+
+        alert("Hostel Published ✅");
+
+        document
+            .querySelector('form')
+            .reset();
+
+        const preview =
+            document.getElementById(
+                'imagePreview'
+            );
+
+        if (preview) {
+
+            preview.style.display =
+                'none';
+
+        }
+
+        // Reload page
+        window.location.reload();
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Failed to publish hostel"
+        );
+
+    }
+
 }
 
 // Save hostel
@@ -91,6 +217,9 @@ async function saveHostel(hostelData, token) {
   }
 
   alert("Hostel published ✅");
+  if (window.opener) {
+    window.opener.location.reload();
+}
 
   document.querySelector('form').reset();
   document.getElementById('imagePreview').style.display = 'none';

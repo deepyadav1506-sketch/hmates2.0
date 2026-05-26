@@ -19,6 +19,7 @@
 
     <!-- Navigation -->
     <header class="main-header">
+
         <div class="container">
 
             <nav class="navbar">
@@ -40,6 +41,7 @@
             </nav>
 
         </div>
+
     </header>
 
     <!-- Main -->
@@ -121,90 +123,8 @@
 
             </div>
 
-            <!-- Hostel Cards -->
-            <div class="cards-container">
-
-                <!-- Hostel 1 -->
-                <div class="card boys hostel-card"
-                    data-type="boys"
-                    data-price="5000"
-                    data-facilities="ac wifi">
-
-                    <img src="css/boys.jpg" alt="Hostel">
-
-                    <span class="tag">Boys</span>
-
-                    <div class="card-info">
-
-                        <h3>Sunrise Boys Hostel</h3>
-
-                        <p class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Near JECRC University
-                        </p>
-
-                        <p class="features">
-                            AC Room • WiFi
-                        </p>
-
-                        <div class="facilities">
-                            <span class="facility-tag">AC</span>
-                            <span class="facility-tag">WiFi</span>
-                        </div>
-
-                        <div class="card-footer">
-                            <div class="price">₹5000</div>
-
-                            <a href="booking.html" class="btn-sm">
-                                Book Now
-                            </a>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <!-- Hostel 2 -->
-                <div class="card girls hostel-card"
-                    data-type="girls"
-                    data-price="3500"
-                    data-facilities="non-ac laundry">
-
-                    <img src="css/girls.jpg" alt="Hostel">
-
-                    <span class="tag">Girls</span>
-
-                    <div class="card-info">
-
-                        <h3>Comfort Girls PG</h3>
-
-                        <p class="location">
-                            <i class="fas fa-map-marker-alt"></i>
-                            Near Poornima College
-                        </p>
-
-                        <p class="features">
-                            Non-AC • Laundry
-                        </p>
-
-                        <div class="facilities">
-                            <span class="facility-tag">Non-AC</span>
-                            <span class="facility-tag">Laundry</span>
-                        </div>
-
-                        <div class="card-footer">
-                            <div class="price">₹3500</div>
-
-                            <a href="booking.html" class="btn-sm">
-                                Book Now
-                            </a>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
+            <!-- Dynamic Hostel Cards -->
+            <div class="cards-container" id="hostelGrid"></div>
 
             <!-- No Results -->
             <div id="noResults" class="hidden text-center">
