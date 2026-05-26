@@ -181,3 +181,89 @@ document.addEventListener('DOMContentLoaded', () => {
     updateNavDisplay();
     window.app = new HMatesApp();
 });
+function filterHostels() {
+
+    const typeFilter =
+        document.getElementById("hostelFilter")?.value.toLowerCase();
+
+    const search =
+        document.getElementById("hostelSearch")?.value.toLowerCase();
+
+    const minPrice =
+        document.getElementById("minPrice")?.value;
+
+    const maxPrice =
+        document.getElementById("maxPrice")?.value;
+
+    const selectedFacilities =
+        Array.from(
+            document.querySelectorAll('.facility-filters input:checked')
+        ).map(cb => cb.value);
+
+    const cards =
+        document.querySelectorAll(".hostel-card");
+
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+
+        const type =
+            card.getAttribute("data-type").toLowerCase();
+
+        const price =
+            parseInt(card.getAttribute("data-price"));
+
+        const facilities =
+            card.getAttribute("data-facilities");
+
+        const title =
+            card.querySelector("h3").innerText.toLowerCase();
+
+        let matchesType =
+            typeFilter === "all" || type === typeFilter;
+
+        let matchesSearch =
+            title.includes(search);
+
+        let matchesPrice =
+            (!minPrice || price >= minPrice) &&
+            (!maxPrice || price <= maxPrice);
+
+        let matchesFacilities =
+            selectedFacilities.every(facility =>
+                facilities.includes(facility)
+            );
+
+        if (
+            matchesType &&
+            matchesSearch &&
+            matchesPrice &&
+            matchesFacilities
+        ) {
+
+            card.style.display = "block";
+
+            visibleCount++;
+
+        } else {
+
+            card.style.display = "none";
+
+        }
+
+    });
+
+    const noResults =
+        document.getElementById("noResults");
+
+    if (visibleCount === 0) {
+
+        noResults.classList.remove("hidden");
+
+    } else {
+
+        noResults.classList.add("hidden");
+
+    }
+
+}
