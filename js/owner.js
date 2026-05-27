@@ -69,7 +69,10 @@ async function addHostelFunc(event) {
                 document.getElementById('nonAcSingle').value
             ),
 
-        ownerId
+        ownerId,
+
+        image:
+            "css/hostal.jpg"
 
     };
 
@@ -78,13 +81,13 @@ async function addHostelFunc(event) {
         const file =
             document.getElementById('hostelImage').files[0];
 
-        // Image Upload
+        // If image uploaded
         if (file) {
 
             const reader =
                 new FileReader();
 
-            reader.onload = async () => {
+            reader.onloadend = async function () {
 
                 hostelData.image =
                     reader.result;
@@ -100,9 +103,6 @@ async function addHostelFunc(event) {
 
         } else {
 
-            hostelData.image =
-                "css/hostal.jpg";
-
             await saveHostel(
                 hostelData,
                 token
@@ -114,7 +114,9 @@ async function addHostelFunc(event) {
 
         console.error(error);
 
-        alert("Failed to add hostel");
+        alert(
+            "Failed to add hostel"
+        );
 
     }
 
